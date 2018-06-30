@@ -1,5 +1,6 @@
 package chat.rocket.android.chatroom.adapter
 
+import android.content.Intent
 import android.graphics.Color
 import android.text.method.LinkMovementMethod
 import android.view.View
@@ -9,6 +10,12 @@ import chat.rocket.android.emoji.EmojiReactionListener
 import chat.rocket.core.model.isSystemMessage
 import kotlinx.android.synthetic.main.avatar.view.*
 import kotlinx.android.synthetic.main.item_message.view.*
+import android.widget.Toast
+import android.content.ActivityNotFoundException
+import android.net.Uri
+import androidx.core.content.ContextCompat.startActivity
+
+
 
 class MessageViewHolder(
     itemView: View,
@@ -39,6 +46,19 @@ class MessageViewHolder(
                 text_edit_indicator.isVisible = !it.isSystemMessage() && it.editedBy != null
                 image_star_indicator.isVisible = it.starred?.isNotEmpty() ?: false
             }
+        }
+
+        itemView.btnActionGoogle.setOnClickListener {
+
+            try {
+                val google = Uri.parse("https://www.google.com")
+                val myIntent = Intent(Intent.ACTION_VIEW, webpage)
+                itemView.context.startActivity(myIntent)
+            } catch (e: ActivityNotFoundException) {
+                Toast.makeText(itemView.context, "No application can handle this request. Please install a web browser or check your URL.", Toast.LENGTH_LONG).show()
+                e.printStackTrace()
+            }
+
         }
     }
 }
